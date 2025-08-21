@@ -2,12 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";   // e.g. "dxabc123"
-    const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET"; // e.g. "mit-gallery-preset"
+    // Make sure to fill these with your actual Cloudinary details
+    const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";      // e.g. "dxabc123"
+    const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET";  // e.g. "mit-gallery-preset"
     // ------------------------------------
 
     const fetchGalleryData = async () => {
         try {
+            // Added a cache-busting parameter to ensure you always get the latest JSON
             const response = await fetch(`gallery-data.json?v=${Date.now()}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
@@ -134,19 +136,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             uploadButton.disabled = true;
-            uploadStatus.textContent = 'Uploading image to Cloudinary...';
-            uploadStatus.style.color = 'black';
+            uploadStatus.textContent = 'Uploading image...';
+            uploadStatus.style.color = 'inherit'; // Reset color
 
             const formData = new FormData();
-            formData.append('file', file); // ✅ correct file
-            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET); // ✅ preset string
+            formData.append('file', file);
+            // ✅ THIS LINE IS THE CRITICAL FIX ✅
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
             try {
                 const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
                     method: 'POST',
                     body: formData,
                 });
-                if (!response.ok) throw new Error('Cloudinary upload failed.');
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error.message || 'Cloudinary upload failed.');
+                }
                 
                 const data = await response.json();
                 const imageUrl = data.secure_url;
@@ -162,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 photos.unshift(newEntry);
                 renderManageList();
                 uploadForm.reset();
-                uploadStatus.textContent = 'Upload successful! Remember to export your data.';
+                uploadStatus.textContent = 'Success! Remember to export your data.';
                 uploadStatus.style.color = 'green';
 
             } catch (error) {
