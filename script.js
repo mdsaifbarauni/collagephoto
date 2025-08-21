@@ -1,10 +1,11 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- CONFIGURATION ---
+    // --- CONFIGURATION ---	
+
     // Make sure to fill these with your actual Cloudinary details
-    const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";      // e.g. "dxabc123"
-    const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET";  // e.g. "mit-gallery-preset"
+    const CLOUDINARY_CLOUD_NAME = "saif";      // e.g. "dxabc123"
+    const CLOUDINARY_UPLOAD_PRESET = "mit-gallery-preset";  // e.g. "mit-gallery-preset"
     // ------------------------------------
 
     const fetchGalleryData = async () => {
@@ -224,3 +225,4 @@ document.addEventListener('DOMContentLoaded', () => {
         })();
     }
 });
+
