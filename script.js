@@ -2,15 +2,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURATION ---
-    // PASTE YOUR CLOUDINARY DETAILS HERE
-    const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";
-    const CLOUDINARY_API_KEY = "YOUR_API_KEY";
-    const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET";
+    const CLOUDINARY_CLOUD_NAME = "YOUR_CLOUD_NAME";   // e.g. "dxabc123"
+    const CLOUDINARY_UPLOAD_PRESET = "YOUR_UPLOAD_PRESET"; // e.g. "mit-gallery-preset"
     // ------------------------------------
 
     const fetchGalleryData = async () => {
         try {
-            // Add a cache-busting query parameter to ensure fresh data
             const response = await fetch(`gallery-data.json?v=${Date.now()}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             return await response.json();
@@ -21,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (document.body.id === 'home-page') {
-        // --- HOME PAGE LOGIC (largely unchanged) ---
+        // --- HOME PAGE LOGIC ---
         const galleryGrid = document.getElementById('gallery-grid');
         const searchInput = document.getElementById('search-input');
         const sortSelect = document.getElementById('sort-select');
@@ -100,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (document.body.id === 'admin-page') {
-        // --- ADMIN PAGE LOGIC (completely rewritten for Cloudinary) ---
+        // --- ADMIN PAGE LOGIC ---
         const manageList = document.getElementById('manage-list');
         const uploadForm = document.getElementById('upload-form');
         const exportButton = document.getElementById('export-json-button');
@@ -125,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         uploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_UPLOAD_PRESET) {
+            if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
                 alert("Cloudinary details are not configured in script.js!");
                 return;
             }
@@ -138,12 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             uploadButton.disabled = true;
             uploadStatus.textContent = 'Uploading image to Cloudinary...';
+            uploadStatus.style.color = 'black';
 
             const formData = new FormData();
-            formData.append('file', file);
-            formData.append('api_key', CLOUDINARY_API_KEY);
-            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            
+            formData.append('file', file); // ✅ correct file
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET); // ✅ preset string
+
             try {
                 const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
                     method: 'POST',
@@ -152,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!response.ok) throw new Error('Cloudinary upload failed.');
                 
                 const data = await response.json();
-                const imageUrl = data.secure_url; // The public URL of the uploaded image
+                const imageUrl = data.secure_url;
 
                 const newEntry = {
                     id: Date.now(),
@@ -162,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     description: e.target['image-description'].value,
                 };
 
-                photos.unshift(newEntry); // Add new photo to the top
+                photos.unshift(newEntry);
                 renderManageList();
                 uploadForm.reset();
                 uploadStatus.textContent = 'Upload successful! Remember to export your data.';
