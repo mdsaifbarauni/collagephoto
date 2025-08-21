@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="admin-page">
+    <main class="container">
+        <header class="dashboard-header">
+            <h1>Admin Panel</h1>
+            <a href="index.html" class="view-gallery-link">View Live Gallery</a>
+        </header>
+
+        <section class="admin-card">
+            <h2>Upload a New Photo</h2>
+            <form id="upload-form">
+                <p>Select an image from your computer. It will be uploaded directly to the cloud.</p>
+                
+                <label for="file-input">Select Image</label>
+                <input type="file" id="file-input" accept="image/*" required>
+                
+                <label for="image-title">Title</label>
+                <input type="text" id="image-title" placeholder="A descriptive title" required>
+                
+                <label for="image-date">Date</label>
+                <input type="date" id="image-date" required>
+                
+                <label for="image-description">Description</label>
+                <textarea id="image-description" placeholder="A short description of the photo."></textarea>
+                
+                <button type="submit" id="upload-button">Upload Photo</button>
+                <p id="upload-status" class="upload-status"></p>
+            </form>
+        </section>
+
+        <section class="admin-card">
+            <h2>Manage Current Entries</h2>
+            <div id="manage-list" class="manage-list">
+                <p class="loader">Loading data...</p>
+            </div>
+        </section>
+
+        <section class="admin-card export-section">
+            <h2>Export Your Data</h2>
+            <p>After uploading and reordering, click here to download your updated `gallery-data.json` file. Then, replace the old file in your project and push to GitHub.</p>
+            <button id="export-json-button">Export gallery-data.json</button>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

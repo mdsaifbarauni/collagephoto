@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT Purnea - Collage Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="home-page">
+
+    <main class="container">
+        <header class="main-header">
+            <h1>MILLIA INSTITUTE OF TECHNOLOGY RAMBAGH PURNEA</h1>
+            <h2>Collage Gallery</h2>
+        </header>
+
+        <section class="controls-bar">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search by title...">
+            </div>
+            <div class="sort-box">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select">
+                    <option value="default">Default</option>
+                    <option value="date">Newest</option>
+                    <option value="title">Title</option>
+                </select>
+            </div>
+            <a href="admin.html" class="admin-button">Admin Panel</a>
+        </section>
+        
+        <section id="gallery-grid" class="gallery-grid">
+            <p class="loader">Loading Gallery...</p>
+        </section>
+    </main>
+
+    <div id="lightbox" class="lightbox-overlay">
+        <span class="lightbox-close-button">&times;</span>
+        <img class="lightbox-content" id="lightbox-image" alt="Enlarged view">
+        <div class="lightbox-caption">
+            <h3 id="lightbox-title"></h3>
+            <p id="lightbox-description"></p>
+        </div>
+        <a class="lightbox-prev-button">&#10094;</a>
+        <a class="lightbox-next-button">&#10095;</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
